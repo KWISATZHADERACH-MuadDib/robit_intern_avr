@@ -40,16 +40,23 @@ static void show_result(void)
 			long fixed = ((long)A * 100) / B; // 소수 2자리 고정소수점
 			int intpart = fixed / 100;
 			int frac = fixed % 100;
-			if (frac < 0) frac = -frac;
+			if (frac < 0)
+				frac = -frac;
 			snprintf(buf, sizeof(buf), "%d/%d=%d.%02d", A, B, intpart, frac);
 			lcd_print(buf);
 		}
 		} else {
 		int result = 0;
 		switch (op) {
-			case '+': result = A + B; break;
-			case '-': result = A - B; break;
-			case '*': result = A * B; break;
+			case '+':
+				result = A + B;
+				break;
+			case '-':
+				result = A - B; 
+				break;
+			case '*':
+				result = A * B; 
+				break;
 		}
 		snprintf(buf, sizeof(buf), "%d%c%d=%d", A, op, B, result);
 		lcd_print(buf);
