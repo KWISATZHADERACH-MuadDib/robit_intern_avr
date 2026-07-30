@@ -54,7 +54,7 @@
 
 ## 5. 핵심 코드 및 레지스터 설정 (Key Implementation)
 
-### 타이머/카운터 및 PWM 초기화 예시 (`timer.c`)
+### LED, 인터럽트 포트 초기설정
 ```c
 #define F_CPU 16000000
 #include <avr/io.h>
