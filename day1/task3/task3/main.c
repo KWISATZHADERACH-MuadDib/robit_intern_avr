@@ -3,7 +3,7 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 
-volatile unsigned char counter = 0xFF;        // 2진 카운터 값 (논리값, 반전 전)
+unsigned char counter = 0xFF;        // 2진 카운터 값 (논리값, 반전 전)
 
 // 버튼1(INT2) : 왼쪽 3개 LED가 오른쪽으로 한 칸씩 이동
 ISR(INT2_vect)
@@ -16,7 +16,7 @@ ISR(INT2_vect)
 	{
 		led = (led >> 1) | 0b10000000;   // 오른쪽으로 한 칸, 빈자리(왼쪽)는 꺼짐
 		PORTA = led;
-		_delay_ms(100);
+		_delay_ms(200);
 	}
 }
 
@@ -31,7 +31,7 @@ ISR(INT3_vect)
 	{
 		led = (led << 1) | 0b00000001;   // 왼쪽으로 한 칸, 빈자리(오른쪽)는 꺼짐
 		PORTA = led;
-		_delay_ms(100);
+		_delay_ms(200);
 	}
 }
 
@@ -67,23 +67,23 @@ int main(void)
 	DDRA = 0xFF;    // LED 출력
 	PORTA = 0xFF;   // 처음엔 전부 꺼짐 (active-low)
 
-	DDRD &= ~((1 << PD2) | (1 << PD3));
+	DDRD = 0b11110011;
 	PORTD |= (1 << PD2) | (1 << PD3);
 
-	DDRE &= ~((1 << PE4) | (1 << PE5));
+	DDRE = 0b11001111;
 	PORTE |= (1 << PE4) | (1 << PE5);
 
 	EICRA |= (1 << ISC21);   // 버튼1 : falling edge
-	EICRA &= ~(1 << ISC20);
+	EICRA |= (0 << ISC20);
 
 	EICRA |= (1 << ISC31);   // 버튼2 : falling edge
-	EICRA &= ~(1 << ISC30);
+	EICRA |= (0 << ISC30);
 
 	EICRB |= (1 << ISC41);   // 버튼3 : falling edge
-	EICRB &= ~(1 << ISC40);
+	EICRB |= (0 << ISC40);
 
 	EICRB |= (1 << ISC50);   // 버튼4 : 논리값 변화(any logical change) = 01
-	EICRB &= ~(1 << ISC51);
+	EICRB |= (0 << ISC51);
 
 	EIMSK |= (1 << INT2) | (1 << INT3) | (1 << INT4) | (1 << INT5);
 
