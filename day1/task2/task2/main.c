@@ -31,27 +31,28 @@ ISR(INT5_vect)
 
 int main(void)
 {
-	int led = 0b00000000;		//기존 깜빡거림 보존
+	int led = 0b00000000;
 	int sw1, sw2;
 
-	DDRA = 0xFF;   // PORTA 전체를 출력으로 설정 
+	DDRA = 0xFF;   // PORTA 전체를 출력으로 설정 (LED)
 	PORTA = 0b11111111;
 
-	DDRD = 0b11110011;   // SW1(PD2), SW2(PD3) 입력으로 설정
-	PORTD |= (1 << PD2) | (1 << PD3);     // 내부 풀업 저항 켜기 
+	DDRD &= ~((1 << PD2) | (1 << PD3));   // SW1(PD2), SW2(PD3) 입력으로 설정
+	PORTD |= (1 << PD2) | (1 << PD3);     // 내부 풀업 저항 켜기 (안 누르면 1, 누르면 0)
 
-	DDRE = 0b11001111;   // PE4, PE5 입력으로 설정
+	DDRE &= ~((1 << PE4) | (1 << PE5));   // PE4, PE5 입력으로 설정
 	PORTE |= (1 << PE4) | (1 << PE5);     // 내부 풀업 저항 켜기
 
 	EICRB |= (1 << ISC41);    // INT4 : falling edge 발생
-	EICRB |= (0 << ISC40);
+	EICRB &= ~(1 << ISC40);
 
 	EICRB |= (1 << ISC51);    // INT5 : falling edge 발생
-	EICRB |= (0 << ISC50);
+	EICRB &= ~(1 << ISC50);
 
 	EIMSK |= (1 << INT4) | (1 << INT5);
 
-	sei();  
+	sei();   // 전체 인터럽트 허용
+	// ---- 여기까지 외부인터럽트 설정 ----
 
 	while (1)
 	{
@@ -65,11 +66,11 @@ int main(void)
 		}
 		else if (sw1 == 1)
 		{
-			PORTA = 0x0F;   // SW1 누르면 4~7번 LED 켜기
+			PORTA = 0x0F;   // 2) SW1 누르면 4~7번 LED 켜기
 		}
 		else if (sw2 == 1)
 		{
-			PORTA = 0xF0;   // SW2 누르면 0~3번 LED 켜기
+			PORTA = 0xF0;   // 3) SW2 누르면 0~3번 LED 켜기
 		}
 		else
 		{
