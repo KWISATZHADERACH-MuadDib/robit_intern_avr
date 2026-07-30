@@ -8,8 +8,6 @@ void adc_init(void)
 {
 	// 기준전압: AVCC (REFS0=1, REFS1=0)
 	ADMUX = (1 << REFS0);
-	// ADC 활성화(ADEN) + 분주비 128 (ADPS2,1,0 = 1,1,1)
-	// 16MHz / 128 = 125kHz (ADC 권장 범위 50~200kHz)
 	ADCSRA = (1 << ADEN) | (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
 }
 
@@ -34,12 +32,12 @@ void led_sequential(uint16_t adc_value)
 		leds |= (1 << i);   // count개만큼 LSB부터 순서대로 켤 위치 표시
 	}
 
-	PORTA = (uint8_t)~leds;   // 액티브 로우: 0 = 켜짐, 1 = 꺼짐이므로 반전
+	PORTA = (uint8_t)~leds;   // 액티브 로우 -> 반전
 }
 
 int main(void)
 {
-	DDRA = 0xFF;      // PORTA 전체를 출력으로 설정 (LED 구동용)
+	DDRA = 0xFF;      // PORTA 전체를 출력으로 설정
 	PORTA = 0xFF;     // LED 다 끔
 
 	char buf[17];
