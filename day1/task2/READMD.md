@@ -94,9 +94,9 @@ int main(void)
 
 ### 동작 사진 / 영상
 
-| 정면 동작 모습 | 센서 측정 및 시리얼 출력 |
-| :---: | :---: |
-| ![Hardware Setup](https://drive.google.com/file/d/1-9JamMKYEpO-mjkyjQ5o8wJx26HpLqxb/view?usp=drive_link)
+| 정면 동작 모습 |
+| :---: |
+| ![Hardware Setup](https://drive.google.com/file/d/1-9JamMKYEpO-mjkyjQ5o8wJx26HpLqxb/view?usp=drive_link) |
 
 ---
 
