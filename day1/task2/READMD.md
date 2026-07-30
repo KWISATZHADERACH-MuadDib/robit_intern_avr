@@ -96,7 +96,7 @@ int main(void)
 
 | 정면 동작 모습 |
 | :---: |
-| ![Hardware Setup](https://drive.google.com/file/d/1-9JamMKYEpO-mjkyjQ5o8wJx26HpLqxb/view?usp=drive_link) |
+| [Hardware_Setup](https://drive.google.com/file/d/1-9JamMKYEpO-mjkyjQ5o8wJx26HpLqxb/view?usp=drive_link) |
 
 ---
 
