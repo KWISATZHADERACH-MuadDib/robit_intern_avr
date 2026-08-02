@@ -101,6 +101,7 @@
 | :---: | :---: |
 |[Hardware Setup](https://drive.google.com/file/d/1Vwxf26oCHbrQc77UAOjMGULT6wbblv7F/view?usp=drive_link)|
 ---
+8/1일에 dynamixel 제어에 성공했는데 8/2일에 할 때는 과부하가 너무 금방 걸려 동영상 촬영에 실패했습니다..
 
 ## 7. AI 툴 활용 명시 (AI Tools Declaration)
 본 과제 작성 및 구현 과정에서 활용한 AI 도구(Generative AI)의 사용 현황 및 목적은 다음과 같음.
