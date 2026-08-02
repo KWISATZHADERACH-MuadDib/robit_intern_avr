@@ -91,13 +91,23 @@ static void uart0_put_int(int16_t v)
 	uint8_t  i = 0;
 	uint16_t u;
 
-	if (v < 0) { uart0_putchar('-'); u = (uint16_t)(-v); }
-	else       { u = (uint16_t)v; }
+	if (v < 0) { 
+		uart0_putchar('-'); u = (uint16_t)(-v);
+	}
+	else       {
+		u = (uint16_t)v; 
+	}
 
-	if (u == 0) { uart0_putchar('0'); return; }
+	if (u == 0) {
+		uart0_putchar('0');
+		return;
+	}
 
-	while (u > 0 && i < sizeof(tmp)) { tmp[i++] = (char)('0' + (u % 10)); u /= 10; }
-	while (i > 0) uart0_putchar(tmp[--i]);
+	while (u > 0 && i < sizeof(tmp)) { 
+		tmp[i++] = (char)('0' + (u % 10)); u /= 10; 
+	}
+	while (i > 0)
+		uart0_putchar(tmp[--i]);
 }
 
 // 글자 하나씩 받아서 버퍼에 쌓다가 엔터 오면 한 줄 완성
@@ -122,8 +132,10 @@ ISR(USART0_RX_vect)
 		return;
 	}
 
-	if (g_len < (LINE_BUF_SIZE - 1)) g_buf[g_len++] = (char)c;
-	else                             g_overflow = 1;
+	if (g_len < (LINE_BUF_SIZE - 1)) 
+		g_buf[g_len++] = (char)c;
+	else                            
+		g_overflow = 1;
 }
 
 // "abc", "18a", 빈 문자열 다 걸러냄
@@ -136,18 +148,25 @@ static uint8_t parse_int(const char *s, int16_t *out)
 
 	if (s[0] == '\0') return 0;
 
-	if      (s[0] == '-') { sign = -1; i = 1; }
-	else if (s[0] == '+') { i = 1; }
+	if      (s[0] == '-') {
+		sign = -1; i = 1; 
+	}
+	else if (s[0] == '+') {
+		i = 1;
+	}
 
 	for (; s[i] != '\0'; i++)
 	{
-		if (s[i] < '0' || s[i] > '9') return 0;
+		if (s[i] < '0' || s[i] > '9')
+			return 0;
 		value = value * 10 + (s[i] - '0');
 		digits++;
-		if (value > 32000) return 0;
+		if (value > 32000)
+			return 0;
 	}
 
-	if (digits == 0) return 0;
+	if (digits == 0)
+		return 0;
 
 	*out = (int16_t)(sign * value);
 	return 1;
@@ -173,7 +192,8 @@ int main(void)
 
 	while (1)
 	{
-		if (!g_ready) continue;
+		if (!g_ready) 
+			continue;
 
 		char    line[LINE_BUF_SIZE];
 		uint8_t of;
@@ -182,7 +202,8 @@ int main(void)
 
 		// ISR이 버퍼 만지는 중에 읽으면 섞일 수 있어서 잠깐 막고 복사
 		cli();
-		for (i = 0; i < LINE_BUF_SIZE; i++) line[i] = g_buf[i];
+		for (i = 0; i < LINE_BUF_SIZE; i++)
+			line[i] = g_buf[i];
 		line[LINE_BUF_SIZE - 1] = '\0';
 		of         = g_overflow;
 		g_len      = 0;
