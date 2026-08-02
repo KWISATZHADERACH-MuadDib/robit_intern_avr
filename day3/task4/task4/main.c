@@ -32,9 +32,9 @@ static void softUART_putch(uint8_t data)
 	for (i = 0; i < 8; i++)
 	{
 		if (data & 0x01)
-		PORTD |=  (1 << TX_PIN);    // 비트가 1이면 High
+			PORTD |=  (1 << TX_PIN);    // 비트가 1이면 High
 		else
-		PORTD &= ~(1 << TX_PIN);    // 비트가 0이면 Low
+			PORTD &= ~(1 << TX_PIN);    // 비트가 0이면 Low
 
 		_delay_us(BIT_TIME);
 		data >>= 1;       
