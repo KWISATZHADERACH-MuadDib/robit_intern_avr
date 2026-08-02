@@ -98,9 +98,12 @@ static uint8_t adc_to_dist(uint16_t adc, uint16_t *dist)
 
     *dist = 0;
 
-    if (adc < ADC_DISCONNECT) return PSD_DISCONNECTED;
-    if (adc < ADC_FAR_LIMIT)  return PSD_TOO_FAR;
-    if (adc > ADC_NEAR_LIMIT) return PSD_TOO_CLOSE;
+    if (adc < ADC_DISCONNECT) 
+        return PSD_DISCONNECTED;
+    if (adc < ADC_FAR_LIMIT) 
+        return PSD_TOO_FAR;
+    if (adc > ADC_NEAR_LIMIT)
+        return PSD_TOO_CLOSE;
 
     // 표에서 해당 구간을 찾아 선형보간
     for (i = 0; i < LUT_SIZE - 1; i++) {
