@@ -69,7 +69,8 @@ static void uart_putchar(char c)
 
 static void uart_puts(const char *s)
 {
-    while (*s) uart_putchar(*s++);
+    while (*s)
+        uart_putchar(*s++);
 }
 
 
@@ -164,7 +165,8 @@ int main(void)
     uart_puts(line);
 
     while (1) {
-        if (!do_measure) continue;
+        if (!do_measure) 
+            continue;
         do_measure = 0;
 
         adc = adc_read();
