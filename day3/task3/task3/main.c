@@ -101,8 +101,7 @@ ISR(USART0_RX_vect)
 static void adc_init(void)
 {
 	ADMUX  = (1 << REFS0);                          // AVCC 기준, ADC0(PF0)
-	ADCSRA = (1 << ADEN)
-	| (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);   // 분주비 : 128
+	ADCSRA = (1 << ADEN) | (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);   // 분주비 : 128
 }
 
 static uint16_t adc_read(void)
@@ -119,7 +118,8 @@ static uint16_t adc_read_avg(void)
 	uint8_t  i;
 	uint32_t sum = 0;
 
-	for (i = 0; i < 8; i++) sum += adc_read();
+	for (i = 0; i < 8; i++) 
+		sum += adc_read();
 
 	return (uint16_t)(sum >> 3);
 }
@@ -197,7 +197,8 @@ static void dxl_write(uint8_t id, uint16_t addr, uint8_t *data, uint8_t dataLen)
 	packet[idx++] = (uint8_t)(addr & 0xFF);
 	packet[idx++] = (uint8_t)(addr >> 8);
 
-	for (i = 0; i < dataLen; i++) packet[idx++] = data[i];
+	for (i = 0; i < dataLen; i++) 
+		packet[idx++] = data[i];
 
 	crc = update_crc(0, packet, idx);
 	packet[idx++] = (uint8_t)(crc & 0xFF);
@@ -209,7 +210,8 @@ static void dxl_write(uint8_t id, uint16_t addr, uint8_t *data, uint8_t dataLen)
 	// TXC0는 1을 써야 클리어됨. |=로 안 하면 U2X0가 같이 날아감
 	UCSR0A |= (1 << TXC0);
 
-	for (i = 0; i < idx; i++) uart0_putchar(packet[i]);
+	for (i = 0; i < idx; i++) 
+		uart0_putchar(packet[i]);
 
 	while (!(UCSR0A & (1 << TXC0)));    // 마지막 비트까지 다 나갈 때까지
 
@@ -313,7 +315,8 @@ int main(void)
 			goalSpeed = (uint16_t)((uint32_t)d * SPEED_MAX / 9UL);
 
 			#if SPEED_ZERO_AS_SLOWEST
-			if (goalSpeed == 0) goalSpeed = 1;
+			if (goalSpeed == 0) 
+				goalSpeed = 1;
 			#endif
 
 			dxl_write4(DXL_ID, ADDR_PROFILE_VELOCITY, goalSpeed);
@@ -329,9 +332,7 @@ int main(void)
 		#endif
 
 		// ADC가 한두 칸씩 계속 떨려서, 어느 정도 변했을 때만 보냄
-		if (lastPos == 0xFFFF ||
-		(goalPos > lastPos && goalPos - lastPos >= 4) ||
-		(lastPos > goalPos && lastPos - goalPos >= 4))
+		if (lastPos == 0xFFFF || (goalPos > lastPos && goalPos - lastPos >= 4) || (lastPos > goalPos && lastPos - goalPos >= 4))
 		{
 			dxl_write4(DXL_ID, ADDR_GOAL_POSITION, goalPos);
 			lastPos = goalPos;
