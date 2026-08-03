@@ -68,6 +68,6 @@ PSR321 : Timer1, Timer2, Timer3이 공유하는 프리스케일러를 한번에 
 + OCIE1C : Timer 채널 C 비교매치
 
 #### TIFR / ETIFR 
-TIFR :  OCF2  TOV2  ICF1  OCF1A OCF1B TOV1  OCF0  TOV0
+TIFR :  OCF2  TOV2  ICF1  OCF1A OCF1B TOV1  OCF0  TOV0 <br>
 ETIFR:  ICF3  OCF3A OCF3B TOV3  OCF3C OCF1C  -     -
 해당 이벤트가 일어나면 하드웨어가 자동처럼 이 비트를 1로 세운다.
