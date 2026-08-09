@@ -1,17 +1,3 @@
-/*
- * 과제 4 (심화) - RAW / FILTERED 동시 출력
- *
- * PSD 센서값을 읽어서 필터 적용 전후를 한 줄에 같이 찍는다.
- *   RAW:  412 | FILTERED:  405 | DISTANCE:  15.2cm
- *
- * 필터는 중앙값(median)을 썼다. 과제3에서 값을 찍어보니 PSD가 가끔
- * 확 튀는 값을 내는데, 이동평균은 튄 값이 평균에 그대로 섞여버린다.
- * 중앙값은 정렬해서 가운데를 고르니까 튄 값 하나쯤은 그냥 버려진다.
- * USE_MEDIAN을 0으로 바꾸면 이동평균으로 돌려서 비교해볼 수 있다.
- *
- * 센서: SHARP GP2Y0A02YK0F, 20~150cm
- */
-
 #ifndef F_CPU
 #define F_CPU 16000000UL
 #endif
@@ -118,7 +104,7 @@ static uint16_t median_of(uint16_t *src, uint8_t n)
 
     for (i = 0; i < n; i++) buf[i] = src[i];
 
-    // 삽입정렬. 5개뿐이라 이걸로 충분하다.
+    // 삽입정렬
     for (i = 1; i < n; i++) {
         key = buf[i];
         j = i;
@@ -152,9 +138,12 @@ static uint8_t adc_to_dist(uint16_t adc, uint16_t *dist)
 
     *dist = 0;
 
-    if (adc < ADC_DISCONNECT) return PSD_DISCONNECTED;
-    if (adc < ADC_FAR_LIMIT)  return PSD_TOO_FAR;
-    if (adc > ADC_NEAR_LIMIT) return PSD_TOO_CLOSE;
+    if (adc < ADC_DISCONNECT)
+		return PSD_DISCONNECTED;
+    if (adc < ADC_FAR_LIMIT)  
+		return PSD_TOO_FAR;
+    if (adc > ADC_NEAR_LIMIT)
+		return PSD_TOO_CLOSE;
 
     // 표에서 해당 구간을 찾아 선형보간
     for (i = 0; i < LUT_SIZE - 1; i++) {
