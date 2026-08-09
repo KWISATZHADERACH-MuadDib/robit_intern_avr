@@ -20,6 +20,5 @@ int main(void)
 
     while (1)
     {
-        // 계속 회전 유지
     }
 }
