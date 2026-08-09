@@ -99,7 +99,7 @@ static uint16_t adc_read(uint8_t ch)
 	return ADCW;
 }
 
-// ==================== 버튼 ====================
+//버튼
 static void btn_init(void)
 {
 	// PD2, PD3 입력 + 내부 풀업. PD0/PD1 은 I2C 가 쓰므로 건드리지 않는다.
@@ -129,7 +129,7 @@ static uint8_t btn_scan(void)
 	return edge;
 }
 
-// ==================== MAF + 정규화 ====================
+// MAF + 정규화 
 static void ir_ch_reset(ir_ch_t *c)
 {
 	uint8_t i;
@@ -210,7 +210,7 @@ static void ir_ch_update(ir_ch_t *c, uint16_t sample, uint8_t learn)
 	}
 }
 
-// ==================== LED ====================
+//LED
 static void led_init(void)
 {
 	LED_DDR |= LED_MASK;
@@ -251,7 +251,7 @@ static void led_update(void)
 	#endif
 }
 
-// ==================== 출력 ====================
+// 출력
 static void print_uart(void)
 {
 	uint8_t i;
@@ -352,7 +352,6 @@ static void report_calib(void)
 	printf("\n");
 }
 
-// ==================== main ====================
 int main(void)
 {
 	uint8_t  i;
@@ -402,7 +401,7 @@ int main(void)
 			lcd_clear();
 		}
 
-		// ---- SW2 : 캘리브레이션 종료 -> 출력 시작 ----
+		// SW2 : 캘리브레이션 종료 -> 출력 시작
 		if (edge & BTN2_BIT) {
 			if (state == ST_CALIB)
 			report_calib();
