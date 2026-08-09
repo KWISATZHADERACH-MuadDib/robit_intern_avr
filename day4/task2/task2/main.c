@@ -59,8 +59,10 @@ static uint8_t days_in_month(uint16_t y, uint8_t m)
 {
 	static const uint8_t dim[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
 
-	if (m < 1 || m > 12) return 31;                 // 혹시 몰라서
-	if (m == 2 && is_leap_year(y)) return 29;
+	if (m < 1 || m > 12)
+		return 31;                 // 혹시 몰라서
+	if (m == 2 && is_leap_year(y))
+		return 29;
 
 	return dim[m - 1];
 }
@@ -126,7 +128,8 @@ static uint16_t adc_read_avg(void)
 {
 	uint8_t  i;
 	uint32_t sum = 0;
-	for (i = 0; i < 8; i++) sum += adc_read();
+	for (i = 0; i < 8; i++) 
+		sum += adc_read();
 	return (uint16_t)(sum >> 3);
 }
 
@@ -136,7 +139,8 @@ static uint16_t adc_map(uint16_t adc, uint16_t lo, uint16_t hi)
 	uint32_t span = (uint32_t)(hi - lo + 1);
 	uint16_t v = lo + (uint16_t)(((uint32_t)adc * span) / 1024UL);
 
-	if (v > hi) v = hi;
+	if (v > hi) 
+		v = hi;
 	return v;
 }
 
@@ -151,7 +155,8 @@ static uint8_t sw_pressed(uint8_t idx, uint8_t bit)
 	if (g_sw_last[idx] == 1 && cur == 0)            // 눌리는 순간만 잡음
 	{
 		_delay_ms(20);                              // 채터링 가라앉을 때까지
-		if (!(SW_PIN_REG & (1 << bit))) hit = 1;    // 아직도 눌려있으면 진짜
+		if (!(SW_PIN_REG & (1 << bit)))
+			hit = 1;    // 아직도 눌려있으면 진짜
 	}
 
 	g_sw_last[idx] = cur;
@@ -173,34 +178,51 @@ static void timer1_init(void)
 // (I2C가 느려서 ISR 안에서 하면 시간이 계속 밀림)
 ISR(TIMER1_COMPA_vect)
 {
-	if (!g_running) return;
+	if (!g_running)
+		return;
 
 	g_centi++;
-	if (g_centi < 100) { g_tick = 1; return; }
+	if (g_centi < 100) {
+		g_tick = 1; return;
+	}
 
 	g_centi = 0;
 	g_sec++;
-	if (g_sec < 60) { g_tick = 1; return; }
+	if (g_sec < 60) {
+		g_tick = 1; return;
+	}
 
 	g_sec = 0;
 	g_min++;
-	if (g_min < 60) { g_tick = 1; return; }
+	if (g_min < 60) {
+		g_tick = 1; return;
+	}
 
 	g_min = 0;
 	g_hour++;
-	if (g_hour < 24) { g_tick = 1; return; }
+	if (g_hour < 24) {
+		g_tick = 1;
+		return; 
+	}
 
 	g_hour = 0;
 	g_day++;
-	if (g_day <= days_in_month(g_year, g_month)) { g_tick = 1; return; }
+	if (g_day <= days_in_month(g_year, g_month)) {
+		g_tick = 1;
+		return; 
+	}
 
 	g_day = 1;
 	g_month++;
-	if (g_month <= 12) { g_tick = 1; return; }
+	if (g_month <= 12) { 
+		g_tick = 1; 
+		return; 
+	}
 
 	g_month = 1;
 	g_year++;
-	if (g_year > YEAR_MAX) g_year = YEAR_MIN;
+	if (g_year > YEAR_MAX)
+		g_year = YEAR_MIN;
 
 	g_tick = 1;
 }
@@ -214,8 +236,10 @@ static void show_setting(const char *label, uint16_t value, uint8_t digits)
 	pad16(buf);
 	lcd_update_line(0, buf);
 
-	if (digits == 4) sprintf(buf, "    %04u", value);
-	else             sprintf(buf, "      %02u", value);
+	if (digits == 4) s
+		printf(buf, "    %04u", value);
+	else            
+		sprintf(buf, "      %02u", value);
 	pad16(buf);
 	lcd_update_line(1, buf);
 }
@@ -277,14 +301,16 @@ int main(void)
 			adc = adc_read_avg();
 			g_year = adc_map(adc, YEAR_MIN, YEAR_MAX);
 			show_setting("SET YEAR", g_year, 4);
-			if (sw_pressed(0, SW1_BIT)) state = SET_MONTH;
+			if (sw_pressed(0, SW1_BIT)) 
+				state = SET_MONTH;
 			break;
 
 			case SET_MONTH:
 			adc = adc_read_avg();
 			g_month = (uint8_t)adc_map(adc, 1, 12);
 			show_setting("SET MONTH", g_month, 2);
-			if (sw_pressed(0, SW1_BIT)) state = SET_DAY;
+			if (sw_pressed(0, SW1_BIT))
+				state = SET_DAY;
 			break;
 
 			case SET_DAY:
@@ -293,21 +319,24 @@ int main(void)
 			adc     = adc_read_avg();
 			g_day   = (uint8_t)adc_map(adc, 1, maxDay);
 			show_setting("SET DAY", g_day, 2);
-			if (sw_pressed(0, SW1_BIT)) state = SET_HOUR;
+			if (sw_pressed(0, SW1_BIT))
+				state = SET_HOUR;
 			break;
 
 			case SET_HOUR:
 			adc = adc_read_avg();
 			g_hour = (uint8_t)adc_map(adc, 0, 23);
 			show_setting("SET HOUR", g_hour, 2);
-			if (sw_pressed(0, SW1_BIT)) state = SET_MIN;
+			if (sw_pressed(0, SW1_BIT))
+				state = SET_MIN;
 			break;
 
 			case SET_MIN:
 			adc = adc_read_avg();
 			g_min = (uint8_t)adc_map(adc, 0, 59);
 			show_setting("SET MINUTE", g_min, 2);
-			if (sw_pressed(0, SW1_BIT)) state = SET_SEC;
+			if (sw_pressed(0, SW1_BIT)) 
+				state = SET_SEC;
 			break;
 
 			case SET_SEC:

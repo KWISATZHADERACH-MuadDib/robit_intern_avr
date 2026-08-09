@@ -1,14 +1,3 @@
-/*
- * 과제 3 - PSD 거리 측정
- *
- * PF1(ADC1)로 PSD 센서 값을 읽어서 cm 단위로 바꾼 뒤 UART로 출력.
- * 센서는 SHARP GP2Y0A02YK0F, 측정범위 20~150cm.
- *
- * 주의: 이 센서는 20cm보다 가까워지면 출력전압이 오히려 떨어진다.
- *       그래서 같은 ADC값이 두 개의 거리를 의미할 수 있어서
- *       20cm 미만은 거리를 계산하지 않고 경고만 띄운다.
- */
-
 #ifndef F_CPU
 #define F_CPU 16000000UL
 #endif
@@ -80,7 +69,8 @@ static void uart_putchar(char c)
 
 static void uart_puts(const char *s)
 {
-    while (*s) uart_putchar(*s++);
+    while (*s)
+        uart_putchar(*s++);
 }
 
 
@@ -109,9 +99,12 @@ static uint8_t adc_to_dist(uint16_t adc, uint16_t *dist)
 
     *dist = 0;
 
-    if (adc < ADC_DISCONNECT) return PSD_DISCONNECTED;
-    if (adc < ADC_FAR_LIMIT)  return PSD_TOO_FAR;
-    if (adc > ADC_NEAR_LIMIT) return PSD_TOO_CLOSE;
+    if (adc < ADC_DISCONNECT) 
+        return PSD_DISCONNECTED;
+    if (adc < ADC_FAR_LIMIT) 
+        return PSD_TOO_FAR;
+    if (adc > ADC_NEAR_LIMIT)
+        return PSD_TOO_CLOSE;
 
     // 표에서 해당 구간을 찾아 선형보간
     for (i = 0; i < LUT_SIZE - 1; i++) {
@@ -172,7 +165,8 @@ int main(void)
     uart_puts(line);
 
     while (1) {
-        if (!do_measure) continue;
+        if (!do_measure) 
+            continue;
         do_measure = 0;
 
         adc = adc_read();
