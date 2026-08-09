@@ -81,7 +81,7 @@
 
 | 정면 동작 모습 | 센서 측정 및 시리얼 출력 |
 | :---: | :---: |
-[Hardware Setup]([https://drive.google.com/file/d/15K5N_oKLo1qoeHLa0qSWhyuX07KBJ0n5/view?usp=drive_link](https://drive.google.com/file/d/1iOq8W1MERKFv7QbZ0HPagXduAIW2AxtZ/view?usp=drive_link))
+[Hardware Setup](https://drive.google.com/file/d/1iOq8W1MERKFv7QbZ0HPagXduAIW2AxtZ/view?usp=drive_link)
 ---
 
 ## 7. AI 툴 활용 명시 (AI Tools Declaration)
