@@ -21,7 +21,7 @@
 | **IDE / Compiler** | Microchip Studio 7.0 / Microchip AVR GCC |
 | **Flasher Tool** | USBISP / STK500 |
 | **언어** | C Language |
-| **주요 부품** | ATmega128 개발보드, 모토 드라이버|
+| **주요 부품** | ATmega128 개발보드, 모터 드라이버, 모터|
 
 ---
 
